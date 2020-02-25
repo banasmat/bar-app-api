@@ -4,13 +4,11 @@
 namespace App\Repository;
 
 
-use App\ReadModel\Order;
+use App\Aggregate\Order;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventSourcing\AggregateFactory\NamedConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventStore\EventStore;
-use Broadway\ReadModel\ElasticSearch\ElasticSearchRepositoryFactory;
-use Broadway\ReadModel\Repository;
 
 class OrderWriteRepository implements OrderRepository
 {

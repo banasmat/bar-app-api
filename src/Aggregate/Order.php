@@ -12,12 +12,20 @@ final class Order extends EventSourcedAggregateRoot
     /** @var string */
     private $id;
 
+    /** @var string */
+    private $placeId;
+
+    /** @var array */
+    private $orderItems;
+
     public static function create(
-        string $orderId
+        string $orderId,
+        string $placeId,
+        array $orderItems
     ): self {
         $order = new static();
         $order->apply(
-            new OrderWasCreatedEvent($orderId)
+            new OrderWasCreatedEvent($orderId, $placeId, $orderItems)
         );
 
         return $order;
@@ -36,5 +44,7 @@ final class Order extends EventSourcedAggregateRoot
     protected function applyOrderWasCreatedEvent(OrderWasCreatedEvent $event): void
     {
         $this->id = $event->id;
+        $this->placeId = $event->placeId;
+        $this->orderItems = $event->orderItems;    //TODO create collection
     }
 }

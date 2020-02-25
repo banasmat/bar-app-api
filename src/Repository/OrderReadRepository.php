@@ -4,18 +4,18 @@
 namespace App\Repository;
 
 
+use App\ReadModel\DBALRepository;
+use App\ReadModel\DBALRepositoryFactory;
 use App\ReadModel\Order;
-use Broadway\ReadModel\ElasticSearch\ElasticSearchRepositoryFactory;
-use Broadway\ReadModel\Repository;
 
 class OrderReadRepository implements OrderRepository
 {
     /**
-     * @var Repository
+     * @var DBALRepository
      */
     private $repository;
 
-    public function __construct(ElasticSearchRepositoryFactory $repositoryFactory)
+    public function __construct(DBALRepositoryFactory $repositoryFactory)
     {
         $this->repository = $repositoryFactory->create('order_repository', Order::class);
     }
@@ -28,5 +28,18 @@ class OrderReadRepository implements OrderRepository
     public function findAll(): array
     {
         return $this->repository->findAll();
+    }
+
+    public function find($id): ?Order
+    {
+        return $this->repository->find($id);
+    }
+
+    public function findActiveByPlaceId($placeId): array
+    {
+        return $this->repository->findBy([
+            'placeId' => $placeId,
+            //'status' => NOT finished
+        ]);
     }
 }

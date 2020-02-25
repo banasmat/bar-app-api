@@ -26,22 +26,6 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-#    broadway_demo.command.create_read_model:
-#        class: App\SfCommand\CreateReadModelCommand
-#        arguments:
-#            - "@doctrine.dbal.default_connection"
-#            - "@broadway_demo.read_model.repository.people_that_bought_this_product"
-#        tags:
-#            - { name: console.command }
-#
-#    broadway_demo.command.drop_read_model:
-#        class: App\SfCommand\DropReadModelCommand
-#        arguments:
-#            - "@doctrine.dbal.default_connection"
-#            - "@broadway_demo.read_model.repository.people_that_bought_this_product"
-#        tags:
-#            - { name: console.command }
-
 ################### COMMAND ###################
 
     App\SfCommand\CreateReadModelCommand:
@@ -72,11 +56,51 @@ services:
         tags:
             - { name: console.command }
 
+#################### CONTROLLER ###################
+
+    app.controller.order:
+        class: App\Controller\OrderController
+        arguments:
+            - '@broadway.command_handling.simple_command_bus'
+            - '@broadway.uuid.generator'
+
 ################### REPOSITORY ###################
 
-    app.read_model.repository.order:
-        class: App\ReadModel\DBALRepository
+    app.write.repository.order:
+        class: App\Repository\OrderWriteRepository
         arguments:
-            $serializer: '@broadway.simple_interface_serializer'
-            $tableName: 'order_read_model'
-            $class: 'App\ReadModel\Order'
+            - "@broadway.event_store.dbal"
+            - "@broadway.event_handling.event_bus"
+            - []
+
+    app.read_model.repository.order:
+        class: App\Repository\OrderReadRepository
+#        arguments:
+#            - "@app.read_model.repository_factory"
+
+    App\ReadModel\DBALRepositoryFactory:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+            - '@broadway.serializer.readmodel'
+            - "read_model"
+
+
+#################### Command Handler ###################
+
+    App\Handler\CreateOrderHandler:
+        arguments:
+            - "@app.write.repository.order"
+        tags:
+            - { name: broadway.command_handler }
+
+
+#################### MISC ###################
+
+    Broadway\CommandHandling\CommandBus:
+        alias: 'broadway.command_handling.simple_command_bus'
+
+    Broadway\UuidGenerator\UuidGeneratorInterface:
+        alias: 'broadway.uuid.generator'
+
+    Broadway\Serializer\Serializer:
+        alias: 'broadway.simple_interface_serializer'
