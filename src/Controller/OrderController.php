@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Aggregate\Order;
 use App\Command\CreateOrderCommand;
+use App\Command\UpdateOrderStatusCommand;
 use App\Repository\OrderReadRepository;
 use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
@@ -31,7 +32,7 @@ class OrderController
     /**
      * @Route("/create-order", name="create_order")
      */
-    public function createOrder(Request $request, OrderReadRepository $orderBroadwayRepository): Response
+    public function createOrder(Request $request): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -40,11 +41,30 @@ class OrderController
 
         $this->commandBus->dispatch($command);
 
-        return new JsonResponse(['id' => $orderId]);
+        return new JsonResponse([
+            'orderId' => $orderId,
+            'paymentUrl' => 'some_url' //TODO request payment etc.
+        ]);
     }
 
     /**
-     * @Route("/order/{id}", name="get_order")
+     * @Route("/order/{id}", name="update_order", methods={"POST"})
+     */
+    public function updateOrder(Request $request, $id): Response
+    {
+        //TODO vaildate placeId etc.
+
+        $data = json_decode($request->getContent(), true);
+
+        $command = new UpdateOrderStatusCommand($id, $data['status']);
+
+        $this->commandBus->dispatch($command);
+
+        return new JsonResponse();
+    }
+
+    /**
+     * @Route("/order/{id}", name="get_order", methods={"GET"})
      */
     public function getOrder(OrderReadRepository $orderBroadwayRepository, $id): Response
     {

@@ -4,6 +4,7 @@
 namespace App\Projector;
 
 
+use App\Event\OrderStatusWasUpdatedEvent;
 use App\Event\OrderWasCreatedEvent;
 use App\ReadModel\Order;
 use App\Repository\OrderRepository;
@@ -27,6 +28,13 @@ final class OrderProjector extends Projector
     protected function applyOrderWasCreatedEvent(OrderWasCreatedEvent $event): void
     {
         $order = new Order($event->id);
+        $this->orderRepo->save($order);
+    }
+
+    protected function applyOrderStatusWasUpdatedEvent(OrderStatusWasUpdatedEvent $event): void
+    {
+        $order = $this->orderRepo->find($event->id);
+        $order->setStatus($event->status);
         $this->orderRepo->save($order);
     }
 }

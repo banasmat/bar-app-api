@@ -14,6 +14,9 @@ final class Order implements SerializableReadModel
     /** @var string */
     private $id;
 
+    /** @var int */
+    private $status;
+
     /**
      * Order constructor.
      * @param string $id
@@ -21,6 +24,7 @@ final class Order implements SerializableReadModel
     public function __construct(string $id)
     {
         $this->id = $id;
+        $this->status = \App\Aggregate\Order::ORDER_STATUS_NONE;
     }
 
     public function getId(): string
@@ -28,10 +32,16 @@ final class Order implements SerializableReadModel
         return $this->id;
     }
 
+    public function setStatus(int $status): void
+    {
+        $this->status = $status;
+    }
+
     public static function deserialize(array $data): self
     {
         return new static(
-            $data['id']
+            $data['id'],
+            $data['status']
         );
     }
 
@@ -39,6 +49,7 @@ final class Order implements SerializableReadModel
     {
         return [
             'id' => $this->id,
+            'status' => $this->status,
         ];
     }
 

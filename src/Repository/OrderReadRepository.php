@@ -30,6 +30,7 @@ class OrderReadRepository implements OrderRepository
         return $this->repository->findAll();
     }
 
+    /** @return Order */
     public function find($id): ?Order
     {
         return $this->repository->find($id);

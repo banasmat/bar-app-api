@@ -93,6 +93,12 @@ services:
         tags:
             - { name: broadway.command_handler }
 
+    App\Handler\UpdateOrderStatusHandler:
+        arguments:
+            - "@app.write.repository.order"
+        tags:
+            - { name: broadway.command_handler }
+
 
 #################### MISC ###################
 
