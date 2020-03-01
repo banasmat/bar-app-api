@@ -10,7 +10,7 @@ use Broadway\EventSourcing\AggregateFactory\NamedConstructorAggregateFactory;
 use Broadway\EventSourcing\EventSourcingRepository;
 use Broadway\EventStore\EventStore;
 
-class OrderWriteRepository implements OrderRepository
+class OrderWriteRepository
 {
     /** @var EventSourcingRepository */
     private $eventSourcingRepository;

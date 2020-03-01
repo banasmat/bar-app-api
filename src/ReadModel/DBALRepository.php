@@ -71,6 +71,19 @@ class DBALRepository implements Repository
     /**
      * {@inheritdoc}
      */
+    public function update(Identifiable $readModel): void
+    {
+        Assertion::isInstanceOf($readModel, $this->class);
+
+        $this->connection->update($this->tableName, [
+            'uuid' => $readModel->getId(),
+            'data' => json_encode($this->serializer->serialize($readModel)),
+        ], ['uuid' => $readModel->getId()]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function find($id): ?Identifiable
     {
         $row = $this->connection->fetchAssoc(sprintf('SELECT * FROM %s WHERE uuid = ?', $this->tableName), [$id]);

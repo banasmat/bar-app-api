@@ -7,20 +7,20 @@ namespace App\Projector;
 use App\Event\OrderStatusWasUpdatedEvent;
 use App\Event\OrderWasCreatedEvent;
 use App\ReadModel\Order;
-use App\Repository\OrderRepository;
+use App\Repository\OrderReadRepository;
 use Broadway\ReadModel\Projector;
 
 final class OrderProjector extends Projector
 {
     //TODO inject ReadModelRepo
-    /** @var OrderRepository */
+    /** @var OrderReadRepository */
     private $orderRepo;
 
     /**
      * OrderProjector constructor.
-     * @param OrderRepository $orderRepo
+     * @param OrderReadRepository $orderRepo
      */
-    public function __construct(OrderRepository $orderRepo)
+    public function __construct(OrderReadRepository $orderRepo)
     {
         $this->orderRepo = $orderRepo;
     }
@@ -35,6 +35,6 @@ final class OrderProjector extends Projector
     {
         $order = $this->orderRepo->find($event->id);
         $order->setStatus($event->status);
-        $this->orderRepo->save($order);
+        $this->orderRepo->update($order);
     }
 }

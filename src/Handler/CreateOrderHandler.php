@@ -4,7 +4,6 @@ namespace App\Handler;
 
 use App\Command\CreateOrderCommand;
 use App\Aggregate\Order;
-use App\Repository\OrderRepository;
 use App\Repository\OrderWriteRepository;
 use Broadway\CommandHandling\SimpleCommandHandler;
 

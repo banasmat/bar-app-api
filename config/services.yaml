@@ -67,7 +67,7 @@ services:
 ################### REPOSITORY ###################
 
     app.write.repository.order:
-        class: App\Repository\OrderWriteRepository
+        class: App\Repository\OrderWriteRepository  #TODO rename to EventSourcingRepository (?)
         arguments:
             - "@broadway.event_store.dbal"
             - "@broadway.event_handling.event_bus"
@@ -75,14 +75,26 @@ services:
 
     app.read_model.repository.order:
         class: App\Repository\OrderReadRepository
-#        arguments:
-#            - "@app.read_model.repository_factory"
-
-    App\ReadModel\DBALRepositoryFactory:
         arguments:
             - '@doctrine.dbal.default_connection'
             - '@broadway.serializer.readmodel'
-            - "read_model"
+            - "order_read_model"
+            - App\ReadModel\Order
+
+#    App\ReadModel\DBALRepositoryFactory:
+#        arguments:
+#            - '@doctrine.dbal.default_connection'
+#            - '@broadway.serializer.readmodel'
+#            - "read_model"
+
+
+#################### Projector ###################
+
+    App\Projector\OrderProjector:
+        arguments:
+            - "@app.read_model.repository.order"
+        tags:
+            - { name: broadway.domain.event_listener }
 
 
 #################### Command Handler ###################
