@@ -73,13 +73,15 @@ services:
             - "@broadway.event_handling.event_bus"
             - []
 
-    app.read_model.repository.order:
-        class: App\Repository\OrderReadRepository
+    App\Repository\OrderReadRepository:
         arguments:
             - '@doctrine.dbal.default_connection'
             - '@broadway.serializer.readmodel'
             - "order_read_model"
             - App\ReadModel\Order
+
+    app.read_model.repository.order:
+        alias: App\Repository\OrderReadRepository
 
 #    App\ReadModel\DBALRepositoryFactory:
 #        arguments:

@@ -13,6 +13,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class OrderController
@@ -42,8 +43,9 @@ class OrderController
         $this->commandBus->dispatch($command);
 
         return new JsonResponse([
+            'status' => 'SUCCESS',
             'orderId' => $orderId,
-            'paymentUrl' => 'some_url' //TODO request payment etc.
+            'paymentUrl' => '/payment-mock' //TODO request payment etc.
         ]);
     }
 
@@ -70,7 +72,14 @@ class OrderController
     {
         $order = $orderBroadwayRepository->find($id);
 
-        return new JsonResponse($order);
+        if(null === $order){
+            throw new NotFoundHttpException(sprintf('Order with ID %s not found.', $id));
+        }
+
+        return new JsonResponse([
+            'orderId' => $order->getId(),
+            'status' => $order->getStatus()
+        ]);
     }
 
     /**

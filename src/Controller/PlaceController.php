@@ -57,29 +57,35 @@ class PlaceController
         $lon = $request->query->get('lon');
 
         $mockData =
-'[
-  {
-    "id": 1,
-    "placeId": 1,
-    "name": "Piwo 0,5",
-    "price": 800,
-    "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
+'{
+  "place": {
+    "id": "abcd-1234",
+    "name": "Drink Bar"
   },
-  {
-    "id": 2,
-    "placeId": 1,
-    "name": "Piwo 0,3",
-    "price": 700,
-    "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
-  },
-  {
-    "id": 3,
-    "placeId": 1,
-    "name": "Kawa",
-    "price": 800,
-    "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
-  }
-]';
+  "menuItems": [
+    {
+      "id": 1,
+      "placeId": 1,
+      "name": "Piwo 0,5",
+      "price": 800,
+      "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
+    },
+    {
+      "id": 2,
+      "placeId": 1,
+      "name": "Piwo 0,3",
+      "price": 700,
+      "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
+    },
+    {
+      "id": 3,
+      "placeId": 1,
+      "name": "Kawa",
+      "price": 800,
+      "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
+    }
+  ]
+}';
 
         return new JsonResponse(json_decode($mockData, true));
     }

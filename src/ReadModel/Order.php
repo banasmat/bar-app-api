@@ -32,6 +32,14 @@ final class Order implements SerializableReadModel
         return $this->id;
     }
 
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
     public function setStatus(int $status): void
     {
         $this->status = $status;
