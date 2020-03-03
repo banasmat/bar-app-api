@@ -43,7 +43,7 @@ class OrderController
         $this->commandBus->dispatch($command);
 
         return new JsonResponse([
-            'status' => 'SUCCESS',
+            'ack' => 'SUCCESS',
             'orderId' => $orderId,
             'paymentUrl' => '/payment-mock' //TODO request payment etc.
         ]);

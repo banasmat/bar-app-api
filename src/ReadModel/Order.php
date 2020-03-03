@@ -20,11 +20,12 @@ final class Order implements SerializableReadModel
     /**
      * Order constructor.
      * @param string $id
+     * @param int $status
      */
-    public function __construct(string $id)
+    public function __construct(string $id, int $status)
     {
         $this->id = $id;
-        $this->status = \App\Aggregate\Order::ORDER_STATUS_NONE;
+        $this->status = $status;
     }
 
     public function getId(): string
