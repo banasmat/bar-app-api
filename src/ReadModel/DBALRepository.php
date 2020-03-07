@@ -62,10 +62,15 @@ class DBALRepository implements Repository
     {
         Assertion::isInstanceOf($readModel, $this->class);
 
-        $this->connection->insert($this->tableName, [
+        $this->connection->insert($this->tableName, $this->getInsertData($readModel));
+    }
+
+    protected function getInsertData(Identifiable $readModel)
+    {
+        return [
             'uuid' => $readModel->getId(),
             'data' => json_encode($this->serializer->serialize($readModel)),
-        ]);
+        ];
     }
 
     /**
@@ -75,10 +80,15 @@ class DBALRepository implements Repository
     {
         Assertion::isInstanceOf($readModel, $this->class);
 
-        $this->connection->update($this->tableName, [
+        $this->connection->update($this->tableName, $this->getUpdateData($readModel), ['uuid' => $readModel->getId()]);
+    }
+
+    protected function getUpdateData(Identifiable $readModel)
+    {
+        return [
             'uuid' => $readModel->getId(),
             'data' => json_encode($this->serializer->serialize($readModel)),
-        ], ['uuid' => $readModel->getId()]);
+        ];
     }
 
     /**
@@ -103,9 +113,26 @@ class DBALRepository implements Repository
             return [];
         }
 
-        return array_values(array_filter($this->findAll(), function (Identifiable $readModel) use ($fields) {
-            return $fields === array_intersect_assoc($this->serializer->serialize($readModel)['payload'], $fields);
-        }));
+        $qb =
+            $this->connection->createQueryBuilder()
+                ->select('*')
+                ->from($this->tableName)
+        ;
+
+        foreach($fields as $field => $val){
+            $qb->andWhere(
+                $qb->expr()->eq($field, ':'.$field)
+            );
+            $qb->setParameter($field, $val);
+        }
+
+        return $qb->execute()->fetchAll();
+//
+//        $rows = $this->connection->fetchAll(sprintf('SELECT * FROM %s WHERE', $this->tableName));
+//
+//        return array_values(array_filter($this->findAll(), function (Identifiable $readModel) use ($fields) {
+//            return $fields === array_intersect_assoc($this->serializer->serialize($readModel)['payload'], $fields);
+//        }));
     }
 
     /**

@@ -62,7 +62,9 @@ class OrderController
 
         $this->commandBus->dispatch($command);
 
-        return new JsonResponse();
+        return new JsonResponse([
+            'ack' => 'SUCCESS'
+        ]);
     }
 
     /**
@@ -87,8 +89,12 @@ class OrderController
      */
     public function getOrders(OrderReadRepository $orderBroadwayRepository, $placeId): Response
     {
-        $order = $orderBroadwayRepository->findActiveByPlaceId($placeId);
+        $orders = $orderBroadwayRepository->findActiveByPlaceId($placeId);
 
-        return new JsonResponse($order);
+        //TODO save json_encoded data that will be returned without decoding OR don't encode it at all in REad Model...
+
+        return new JsonResponse(array_map(function($order){
+            return json_decode($order['data'], true, 6)['payload'];
+        }, $orders));
     }
 }

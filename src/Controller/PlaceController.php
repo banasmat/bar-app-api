@@ -59,27 +59,27 @@ class PlaceController
         $mockData =
 '{
   "place": {
-    "id": "abcd-1234",
+    "id": "7e77e904-60bc-46a6-aeb6-44fa6d54cdf8",
     "name": "Drink Bar"
   },
   "menuItems": [
     {
       "id": 1,
-      "placeId": 1,
+      "placeId": "7e77e904-60bc-46a6-aeb6-44fa6d54cdf8",
       "name": "Piwo 0,5",
       "price": 800,
       "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
     },
     {
       "id": 2,
-      "placeId": 1,
+      "placeId": "7e77e904-60bc-46a6-aeb6-44fa6d54cdf8",
       "name": "Piwo 0,3",
       "price": 700,
       "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
     },
     {
       "id": 3,
-      "placeId": 1,
+      "placeId": "7e77e904-60bc-46a6-aeb6-44fa6d54cdf8",
       "name": "Kawa",
       "price": 800,
       "imgUrl": "https://pbs.twimg.com/profile_images/692310978579599361/nsHPRTcr_400x400.jpg"
