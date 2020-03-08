@@ -18,7 +18,7 @@ class OrderReadRepository extends DBALRepository
         return $this->findBy([
             'placeId' => $placeId,
             'status' => Order::ORDER_STATUS_ACCEPTED
-        ]);
+        ], 'createdAt');
     }
 
     protected function getInsertData(Identifiable $readModel)
@@ -26,6 +26,7 @@ class OrderReadRepository extends DBALRepository
         return array_merge(parent::getInsertData($readModel), [
             'status' => $readModel->getStatus(),
             'placeId' => $readModel->getPlaceId(),
+            'createdAt' => $readModel->getCreatedAt()->format('Y-m-d H:i:s'),
         ]);
     }
 
@@ -34,6 +35,7 @@ class OrderReadRepository extends DBALRepository
         return array_merge(parent::getUpdateData($readModel), [
             'status' => $readModel->getStatus(),
             'placeId' => $readModel->getPlaceId(),
+            'createdAt' => $readModel->getCreatedAt()->format('Y-m-d H:i:s'),
         ]);
     }
     
@@ -42,6 +44,7 @@ class OrderReadRepository extends DBALRepository
         $table = parent::configureTable($schema);
         $table->addColumn('placeId', 'guid', ['length' => 36]);
         $table->addColumn('status', 'integer');
+        $table->addColumn('createdAt', 'datetime');
 
         return $table;
     }

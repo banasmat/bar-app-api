@@ -23,19 +23,24 @@ final class Order implements SerializableReadModel
     /** @var array */
     private $data;
 
+    /** @var \DateTime */
+    private $createdAt;
+
     /**
      * Order constructor.
      * @param string $id
      * @param string $placeId
      * @param int $status
      * @param array $data
+     * @param \DateTime $createdAt
      */
-    public function __construct(string $id, string $placeId, int $status, array $data)
+    public function __construct(string $id, string $placeId, int $status, array $data, \DateTime $createdAt)
     {
         $this->id = $id;
         $this->placeId = $placeId;
         $this->status = $status;
         $this->data = $data;
+        $this->createdAt = $createdAt;
     }
 
 
@@ -73,13 +78,22 @@ final class Order implements SerializableReadModel
         return $this->placeId;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt(): \DateTime
+    {
+        return $this->createdAt;
+    }
+
     public static function deserialize(array $data): self
     {
         return new static(
             $data['id'],
             $data['placeId'],
             $data['status'],
-            $data['data']
+            $data['data'],
+            new \DateTime($data['createdAt']['date'])
         );
     }
 
@@ -90,6 +104,7 @@ final class Order implements SerializableReadModel
             'placeId' => $this->placeId,
             'status' => $this->status,
             'data' => $this->data,
+            'createdAt' => $this->createdAt,
         ];
     }
 

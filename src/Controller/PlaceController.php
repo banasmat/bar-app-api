@@ -22,21 +22,21 @@ class PlaceController
         $mockData =
 '[
   {
-    "id": 1,
+    "id": "7e77e904-60bc-46a6-aeb6-44fa6d54cdf8",
     "name": "Drink Bar",
     "address": "ul. Marszałkowska 1, 01-000 Warszawa",
     "category": "bar",
     "imgUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRosGYfJzKSm7wjTDd5JcRTJa6DI751qdfCpot83FdVBHAGoWs3&s"
   },
   {
-    "id": 2,
+    "id": "45c5b054-bd91-4aef-9570-0e1b2d967b39",
     "name": "Drink Bar",
     "address": "ul. Marszałkowska 1, 01-000 Warszawa",
     "category": "bar",
     "imgUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRosGYfJzKSm7wjTDd5JcRTJa6DI751qdfCpot83FdVBHAGoWs3&s"
   },
   {
-    "id": 3,
+    "id": "1cb0288c-c1dd-44a3-af79-96565cd04b26",
     "name": "Drink Bar",
     "address": "ul. Marszałkowska 1, 01-000 Warszawa",
     "category": "bar",

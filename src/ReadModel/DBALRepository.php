@@ -107,7 +107,7 @@ class DBALRepository implements Repository
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $fields): array
+    public function findBy(array $fields, $sort = 'id', $order = 'ASC'): array
     {
         if (empty($fields)) {
             return [];
@@ -117,6 +117,7 @@ class DBALRepository implements Repository
             $this->connection->createQueryBuilder()
                 ->select('*')
                 ->from($this->tableName)
+                ->orderBy($sort, $order)
         ;
 
         foreach($fields as $field => $val){

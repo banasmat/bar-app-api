@@ -94,7 +94,9 @@ class OrderController
         //TODO save json_encoded data that will be returned without decoding OR don't encode it at all in REad Model...
 
         return new JsonResponse(array_map(function($order){
-            return json_decode($order['data'], true, 6)['payload'];
+            $order = json_decode($order['data'], true)['payload'];
+            $order['createdAt'] = substr($order['createdAt']['date'], 0, -7);
+            return $order;
         }, $orders));
     }
 }

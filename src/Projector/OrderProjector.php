@@ -27,7 +27,7 @@ final class OrderProjector extends Projector
 
     protected function applyOrderWasCreatedEvent(OrderWasCreatedEvent $event): void
     {
-        $order = new Order($event->id, $event->placeId, \App\Aggregate\Order::ORDER_STATUS_NONE, $event->orderItems);
+        $order = new Order($event->id, $event->placeId, \App\Aggregate\Order::ORDER_STATUS_NONE, $event->orderItems, new \DateTime);
         $this->orderRepo->save($order);
     }
 
