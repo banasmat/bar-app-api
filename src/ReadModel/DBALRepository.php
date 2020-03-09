@@ -121,10 +121,17 @@ class DBALRepository implements Repository
         ;
 
         foreach($fields as $field => $val){
-            $qb->andWhere(
-                $qb->expr()->eq($field, ':'.$field)
-            );
-            $qb->setParameter($field, $val);
+            if(is_array($val)){
+                $qb->andWhere(
+                    $qb->expr()->in($field, ':'.$field)
+                );
+                $qb->setParameter($field, $val, Connection::PARAM_STR_ARRAY);
+            } else {
+                $qb->andWhere(
+                    $qb->expr()->eq($field, ':'.$field)
+                );
+                $qb->setParameter($field, $val);
+            }
         }
 
         return $qb->execute()->fetchAll();

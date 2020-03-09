@@ -12,12 +12,11 @@ use Doctrine\DBAL\Schema\Table;
 
 class OrderReadRepository extends DBALRepository
 {
-
     public function findActiveByPlaceId($placeId): array
     {
         return $this->findBy([
             'placeId' => $placeId,
-            'status' => Order::ORDER_STATUS_ACCEPTED
+            'status' => [Order::ORDER_STATUS_ACCEPTED, Order::ORDER_STATUS_IN_PROGRESS, Order::ORDER_STATUS_READY]
         ], 'createdAt');
     }
 
