@@ -1,0 +1,9 @@
+#order deny,allow
+#deny from all
+#allow from 89.64.58.187
+allow from all
+
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.php?path=$1 [NC,L,QSA]
